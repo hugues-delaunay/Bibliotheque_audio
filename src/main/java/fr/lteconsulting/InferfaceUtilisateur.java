@@ -14,10 +14,10 @@ public class InferfaceUtilisateur
 
 	public InferfaceUtilisateur( Bibliotheque bibliotheque )
 	{
+		menu.ajouterCommande( new GenerationDisques( bibliotheque ) );
 		menu.ajouterCommande( new AjouterDisque( bibliotheque ) );
 		menu.ajouterCommande( new RechercheParNom( bibliotheque ) );
 		menu.ajouterCommande( new RechercheParCodeBarre( bibliotheque ) );
-		menu.ajouterCommande( new GenerationDisques( bibliotheque ) );
 		menu.ajouterCommande( new AffichageDisquesParNom( bibliotheque ) );
 		menu.ajouterCommande( new AffichageDisquesParCodeBarre( bibliotheque ) );
 	}
