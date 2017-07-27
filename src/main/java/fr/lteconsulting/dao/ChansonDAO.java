@@ -8,12 +8,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.lteconsulting.modele.Chanson;
 import fr.lteconsulting.modele.Disque;
 
-public class DisqueDAO {
+public class ChansonDAO {
 	private Connection connection;
 
-	public DisqueDAO() {
+	public ChansonDAO() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotheque_audio", "root", "root");
@@ -24,16 +25,19 @@ public class DisqueDAO {
 		}
 	}
 
-	public Disque findById(String id) {
+	public Chanson findById(int id) {
 		try {
-			String sql = "SELECT * FROM `disques` WHERE id = ?";
+			String sql = "SELECT * FROM `chansons` WHERE id = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setString(1, id);
+			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
+
 			if (resultSet.next()) {
 				String nom = resultSet.getString("nom");
-				Disque disque = new Disque(id, nom);
-				return disque;
+				int duree = resultSet.getInt("duree");
+				String disqueId = resultSet.getString("disque_id");
+				Chanson chanson = new Chanson(nom, duree);
+				return chanson;
 			} else {
 				return null;
 			}
@@ -41,8 +45,37 @@ public class DisqueDAO {
 			throw new RuntimeException("Impossible de réaliser l(es) opération(s)", e);
 		}
 	}
+
+
+
+	public List<Chanson> findByDisqueId(String disqueId) {
+		try {
+			String sql = "SELECT * FROM `chansons` WHERE disque_id = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, disqueId);
+			ResultSet resultSet = statement.executeQuery();
+			List<Chanson> chansons = new ArrayList<>();
+
+			while (resultSet.next()) {
+				String nom = resultSet.getString("nom");
+				int duree = resultSet.getInt("duree");
+				
+				Chanson chanson = new Chanson( nom, duree);
+				chansons.add(chanson);
+			}
+			if(chansons.size() == 0){
+				return null;
+			}
+			return chansons;
+		} catch (SQLException e) {
+			throw new RuntimeException("Impossible de réaliser l(es) opération(s)", e);
+		}
 	
-	public List<Disque> findByName(String recherche){
+	}
+
+}
+	
+	/*public List<Disque> findByName(String recherche){
 		try{
 			String sql = "SELECT * FROM `disques` WHERE LOWER(`nom`) LIKE ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -145,5 +178,4 @@ public class DisqueDAO {
 			throw new RuntimeException("Impossible de réaliser l(es) opération(s)", e);
 		}
 
-	}
-}
+	}*/

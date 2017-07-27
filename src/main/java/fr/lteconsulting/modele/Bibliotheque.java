@@ -1,71 +1,36 @@
 package fr.lteconsulting.modele;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class Bibliotheque
-{
-	private Map<String, Disque> disques = new HashMap<>();
+import fr.lteconsulting.dao.DisqueDAO;
 
-	public void ajouterDisque( Disque disque )
-	{
-		disques.put( disque.getCodeBarre(), disque );
+public class Bibliotheque {
+	DisqueDAO disqueDAO = new DisqueDAO();
+
+	public void ajouterDisque(Disque disque) {
+		disqueDAO.add(disque);
+
 	}
 
-	public List<Disque> getDisques()
-	{
-		return new ArrayList<>( disques.values() );
+	public List<Disque> getDisques() {
+		return disqueDAO.findAll();
 	}
 
-	public Disque rechercherDisqueParCodeBarre( String codeBarre )
-	{
-		return disques.get( codeBarre );
+	public Disque rechercherDisqueParCodeBarre(String id) {
+		return disqueDAO.findById(id);
 	}
 
-	public List<Disque> rechercherDisqueParNom( String recherche )
-	{
-		recherche = recherche.toLowerCase();
+	public List<Disque> rechercherDisqueParNom(String recherche) {
 
-		List<Disque> resultat = new ArrayList<>();
-
-		for( Disque disque : disques.values() )
-		{
-			if( disque.getNom().toLowerCase().contains( recherche ) )
-				resultat.add( disque );
-		}
-
-		return resultat;
+		return disqueDAO.findByName(recherche);
 	}
 
-	public List<Disque> rechercherDisqueParNom( List<String> termes )
-	{
-		List<Disque> resultat = new ArrayList<>();
-
-		for( Disque disque : disques.values() )
-		{
-			boolean estValide = true;
-			for( String terme : termes )
-			{
-				if( !disque.getNom().toLowerCase().contains( terme.toLowerCase() ) )
-				{
-					estValide = false;
-					break;
-				}
-			}
-
-			if( estValide )
-				resultat.add( disque );
-		}
-
-		return resultat;
-	}
-
-	public void afficher()
-	{
-		System.out.println( "BIBLIOTHEQUE avec " + disques.size() + " disques" );
-		for( Disque disque : disques.values() )
+	public void afficher() {
+		List<Disque> disques = disqueDAO.findAll();
+		System.out.println("BIBLIOTHEQUE avec " + disques.size() + " disques");
+		for (Disque disque : disques) {
 			disque.afficher();
+
+		}
 	}
 }

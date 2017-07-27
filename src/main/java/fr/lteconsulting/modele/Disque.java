@@ -70,4 +70,10 @@ public class Disque
 				chanson.afficher();
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "id=" + codeBarre + ", nom=" + nom + ", chansons=" + chansons +"\r\n";
+	}
+	
 }
