@@ -11,7 +11,7 @@ public class AppTest2 {
 		ChansonDAO dao = new ChansonDAO();
 		
 		chercherEtAfficherChanson(dao, 5);
-		chercherEtAfficherChanson(dao, "sdfv");
+		chercherEtAfficherChanson(dao, "pttd");
 
 
 	}
@@ -21,17 +21,20 @@ public class AppTest2 {
 			System.out.println("La chanson " + id + " a été trouvé :");
 			chanson.afficher();
 		} else {
-			System.out.println("La chanson " + id + "n'existe pas");
+			System.out.println("La chanson " + id + " n'existe pas");
 		}
 
 	}
 	
-	private static void chercherEtAfficherChanson(ChansonDAO dao, String id) {
-		List<Chanson> chansons = dao.findByDisqueId(id);
+	private static void chercherEtAfficherChanson(ChansonDAO dao, String disqueId) {
+		List<Chanson> chansons = dao.findByDisqueId(disqueId);
 		if (chansons != null) {
-			System.out.println("Les chansons sont" + id);
+			for(Chanson chanson: chansons)
+			{
+			System.out.println("Les chansons sont " + chanson.getNom());
+			}
 		} else {
-			System.out.println("La chanson " + id + "n'existe pas");
+			System.out.println("La chanson " + disqueId + "n'existe pas");
 		}
 
 	}
